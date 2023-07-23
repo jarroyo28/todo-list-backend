@@ -1,5 +1,11 @@
 import pytest
+from django.contrib.auth import get_user_model
 from django.urls import reverse
+
+
+def create_user(**params):
+    """Create and return a new user"""
+    return get_user_model().objects.create_user(**params)
 
 
 class TestUserAuthentication:
@@ -17,4 +23,12 @@ class TestUserAuthentication:
         assert "access" in response_data
         assert "refresh" in response_data
 
-    # @pytest.mark.django_db
+    @pytest.mark.django_db
+    def test_user_already_registered(self, unauthenticated_api_client):
+        register_url = reverse("rest_register")
+        user_data = {"email": "user@example.com", "password": "test_password", "name": "Test User"}
+        create_user(**user_data)
+
+        response = unauthenticated_api_client.post(register_url, user_data)
+
+        assert response.status_code == 400
