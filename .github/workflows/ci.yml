@@ -51,4 +51,4 @@ jobs:
         run: docker-compose run --rm django pytest
 
       - name: Tear down the Stack
-        run: docker-compose -f local.yml down
+        run: docker-compose down
