@@ -66,7 +66,7 @@ class TestUserAuthentication:
     ################
 
     @pytest.mark.django_db
-    def test_successful_user_login(self, unauthenticated_api_client):
+    def test_user_login_with_valid_credentials(self, unauthenticated_api_client):
         """Tests successful user login"""
         login_url = reverse("rest_login")
         user_data = {"email": "user@example.com", "password": "test_password"}
@@ -77,3 +77,15 @@ class TestUserAuthentication:
         response_data = response.json()
         assert "access" in response_data
         assert "refresh" in response_data
+
+    def test_user_login_with_bad_credentials(self, unauthenticated_api_client):
+        """Tests that the user can not log in with invalid credentials"""
+        login_url = reverse("rest_login")
+        user_data = {"email": "user@example.com", "password": "test_password"}
+        bad_credentials = {"email": "user@example.com", "password": "test_passwor"}
+        create_user(**user_data)
+        response = unauthenticated_api_client.post(login_url, bad_credentials)
+        assert response.status_code == 400
+
+        response_data = response.json()
+        assert response_data["non_field_errors"] == ["Unable to log in with provided credentials."]
