@@ -16,6 +16,7 @@ urlpatterns = [
     path("users/", include("todo_list_backend.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("dj-rest-auth/", include("dj_rest_auth.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS
