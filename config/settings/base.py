@@ -89,6 +89,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 LOCAL_APPS = [
     "todo_list_backend.users",
     # Your stuff: custom apps go here
+    "todo_list_backend.todos",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
